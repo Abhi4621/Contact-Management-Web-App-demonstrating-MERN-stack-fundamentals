@@ -19,40 +19,37 @@ export default function ContactList({ contacts, onDeleted }){
     <div className="card list">
       <div className="list-header">
         <h2>Contacts</h2>
-        <div>
-          <label>Sort: </label>
-          <select value={sortBy} onChange={e=>setSortBy(e.target.value)}>
+        <div className="controls">
+          <label htmlFor="sort">Sort:</label>
+          <select id="sort" value={sortBy} onChange={e=>setSortBy(e.target.value)}>
             <option value="date">Newest</option>
             <option value="name">Name</option>
           </select>
         </div>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Message</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
+      {sorted.length === 0 ? (
+        <div className="empty">No contacts yet — add your first contact.</div>
+      ) : (
+        <div className="contacts-grid">
           {sorted.map(c => (
-            <tr key={c._id}>
-              <td>{c.name}</td>
-              <td>{c.email || '-'}</td>
-              <td>{c.phone}</td>
-              <td>{c.message || '-'}</td>
-              <td><button onClick={()=>handleDelete(c._id)} className="danger">Delete</button></td>
-            </tr>
+            <article key={c._id} className="contact-card">
+              <div>
+                <h3>{c.name}</h3>
+                <div className="meta">{c.email || '-'} • {c.phone}</div>
+                {c.message && <div className="message">{c.message}</div>}
+              </div>
+
+              <div className="contact-actions">
+                {/* Delete button */}
+                <button aria-label={`Delete ${c.name}`} title="Delete" onClick={()=>handleDelete(c._id)} className="btn-icon">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M8 6l1-2h6l1 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </button>
+              </div>
+            </article>
           ))}
-          {sorted.length===0 && (
-            <tr><td colSpan="5">No contacts yet</td></tr>
-          )}
-        </tbody>
-      </table>
+        </div>
+      )}
     </div>
   )
 }

@@ -15,7 +15,11 @@ export default function App(){
 
   return (
     <div className="container">
-      <h1>Contact Manager</h1>
+      <div className="app-header">
+        <h1>Contact Manager</h1>
+        <div className="subtitle">Easy contact manager — add and manage contacts quickly.</div>
+      </div>
+
       <div className="grid">
         <ContactForm onAdded={loadContacts} />
         <ContactList contacts={contacts} onDeleted={loadContacts} />

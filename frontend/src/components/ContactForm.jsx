@@ -26,7 +26,7 @@ export default function ContactForm({ onAdded }){
       setStatus('success')
       setForm({ name: '', email: '', phone: '', message: '' })
       onAdded && onAdded()
-      setTimeout(() => setStatus(null), 2000)
+      setTimeout(() => setStatus(null), 2200)
     } else {
       setStatus('error')
     }
@@ -37,29 +37,56 @@ export default function ContactForm({ onAdded }){
   }
 
   return (
-    <form className="card" onSubmit={handleSubmit} noValidate>
-      <h2>Contact Form</h2>
-      <label>Name *</label>
-      <input name="name" value={form.name} onChange={handleChange} />
-      {errors.name && <div className="error">{errors.name}</div>}
+    <form className="card contact-form" onSubmit={handleSubmit} noValidate>
+      <h2>Get in touch</h2>
 
-      <label>Email</label>
-      <input name="email" value={form.email} onChange={handleChange} />
-      {errors.email && <div className="error">{errors.email}</div>}
+      <div className="form-row">
+        <label htmlFor="name">Name *</label>
+        <div className="input">
+          <input id="name" name="name" value={form.name} onChange={handleChange} placeholder="Full name" aria-required="true" />
+        </div>
+        {errors.name && <div className="error">{errors.name}</div>}
+      </div>
 
-      <label>Phone *</label>
-      <input name="phone" value={form.phone} onChange={handleChange} />
-      {errors.phone && <div className="error">{errors.phone}</div>}
+      <div className="row">
+        <div className="form-row flex">
+          <label htmlFor="email">Email</label>
+          <div className="input">
+            <input id="email" name="email" value={form.email} onChange={handleChange} type="email" placeholder="name@example.com" />
+          </div>
+          {errors.email && <div className="error">{errors.email}</div>}
+        </div>
 
-      <label>Message</label>
-      <textarea name="message" value={form.message} onChange={handleChange} />
+        <div className="form-row flex">
+          <label htmlFor="phone">Phone *</label>
+          <div className="input">
+            <input id="phone" name="phone" value={form.phone} onChange={handleChange} placeholder="(555) 555-5555" />
+          </div>
+          {errors.phone && <div className="error">{errors.phone}</div>}
+        </div>
+      </div>
 
-      <button type="submit" disabled={!isValid() || status === 'loading'}>
-        {status === 'loading' ? 'Saving...' : 'Submit'}
-      </button>
+      <div className="form-row">
+        <label htmlFor="message">Message</label>
+        <div className="input">
+          <textarea id="message" name="message" value={form.message} onChange={handleChange} placeholder="Optional message or note" />
+        </div>
+      </div>
 
-      {status === 'success' && <div className="success">Contact saved ✅</div>}
-      {status === 'error' && <div className="error">Error saving contact</div>}
+      <div className="form-actions">
+        <button type="submit" className="btn btn-primary" disabled={!isValid() || status === 'loading'}>
+          {status === 'loading' ? 'Saving...' : 'Save contact'}
+        </button>
+
+        <button type="button" className="btn btn-ghost" onClick={() => setForm({ name: '', email: '', phone: '', message: '' })}>
+          Reset
+        </button>
+
+        {status === 'success' && <div className="status success">Saved ✅</div>}
+        {status === 'error' && <div className="status error">Failed to save</div>}
+      </div>
+
+      <div className="helper">Tip: Use a phone number so you can be reached quickly.</div>
     </form>
   )
 }
